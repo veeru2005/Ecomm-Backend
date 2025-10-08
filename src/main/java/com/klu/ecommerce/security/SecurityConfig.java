@@ -32,13 +32,12 @@ public class SecurityConfig {
         http
             .cors().and() // Enable CORS
             .csrf().disable() // Disable CSRF for APIs
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll() // Public endpoints
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight requests
+            .authorizeRequests(auth -> auth
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight requests
+                .antMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll() // Public endpoints
                 .anyRequest().authenticated() // All other endpoints require authentication
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         return http.build();
     }
 
