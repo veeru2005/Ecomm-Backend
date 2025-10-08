@@ -29,9 +29,8 @@ public class SecurityConfig {
         http
             .cors().and()
             .csrf().disable()
-            // Spring Boot 2.7 / Spring Security 5.x compatible DSL
             .authorizeRequests()
-            .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Preflight
+            .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
             .antMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll()
             .anyRequest().authenticated()
             .and()
