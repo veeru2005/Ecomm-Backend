@@ -14,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -23,20 +24,21 @@ public class SecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
-   @Bean
-public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http
-        .cors().and()  
-        .csrf().disable()
-        .authorizeHttpRequests()
-        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // ✅ Preflight
-        .antMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll()
-        .anyRequest().authenticated()
-        .and()
-        .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+            .cors().and()
+            .csrf().disable()
+            // Spring Boot 2.7 / Spring Security 5.x uses the older DSL methods
+            .authorizeRequests()
+            .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // Preflight
+            .antMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll()
+            .anyRequest().authenticated()
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-    return http.build();
-}
+        return http.build();
+    }
 
 
 
