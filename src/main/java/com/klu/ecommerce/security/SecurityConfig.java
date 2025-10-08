@@ -35,7 +35,7 @@ public class SecurityConfig {
             .cors().and() // Enable CORS using the corsConfigurationSource bean 
             .csrf().disable() // Disable CSRF for APIs
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight requests
+                .requestMatchers(antMatcher(HttpMethod.OPTIONS, "/**")).permitAll() // Preflight requests
                 .requestMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll() // Public endpoints
                 .anyRequest().authenticated() // All other endpoints require authentication
             )
