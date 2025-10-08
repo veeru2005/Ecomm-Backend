@@ -18,7 +18,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebSecurity
@@ -34,9 +33,9 @@ public class SecurityConfig {
         http
             .cors().and() // Enable CORS using the corsConfigurationSource bean 
             .csrf().disable() // Disable CSRF for APIs
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(antMatcher(HttpMethod.OPTIONS, "/**")).permitAll() // Preflight requests
-                .requestMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll() // Public endpoints
+            .authorizeRequests(auth -> auth
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Preflight requests
+                .antMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll() // Public endpoints
                 .anyRequest().authenticated() // All other endpoints require authentication
             )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
