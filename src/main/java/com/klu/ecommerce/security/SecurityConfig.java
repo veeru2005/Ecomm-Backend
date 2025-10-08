@@ -26,7 +26,7 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
         .cors().and() 
         .csrf().disable()
         .authorizeHttpRequests()
-        .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // ✅ Preflight
+        .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll() // ✅ Preflight
         .antMatchers("/auth/**", "/api/products/**", "/api/payments/**").permitAll()
         .anyRequest().authenticated()
         .and()
