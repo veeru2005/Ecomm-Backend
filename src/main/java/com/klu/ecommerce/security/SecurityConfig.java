@@ -40,8 +40,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-
-
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -60,9 +58,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-       @Bean
+    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // For local dev, allow frontend origin explicitly (required when allowCredentials=true)
         configuration.setAllowedOrigins(List.of("http://localhost:30082"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
